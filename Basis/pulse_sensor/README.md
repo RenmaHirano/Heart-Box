@@ -10,7 +10,7 @@
 
 * MCP3008(A/Dコンバータ)
 
-# Cirsuit Diagram
+# Circuit Diagram
 
 ラズパイ→MCP3008
 
