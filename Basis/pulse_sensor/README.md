@@ -42,9 +42,11 @@ GND　→ AGND, DGND
 # Installation
 
 (1)GUIの設定メニューからSPIを有効にして再起動。
+
 →設定→Raspberry Piの設定→インターフェース
 
 (2)SPIが有効になったか確認。
+
 →spi-bcm2835とか出てくればOK。
 
 ```bash
@@ -60,7 +62,7 @@ sudo pip3 install spidev
 
 # Usage
 
-* pulse-wave:値を0.01秒ごとに計測してcsc形式で保存
+* pulse-wave:値を0.01秒ごとに計測してcsv形式で保存
 
 * pulse-peak:心拍のピークを検出してprint
 
