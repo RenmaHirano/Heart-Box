@@ -63,7 +63,7 @@ class Websocket_Client():
     def run(self, *args):
         while True:
             while not self.ready:
-                # time.sleep(0.1)
+                time.sleep(0.1)
                 # self.val = 200
                 # self.message = str("{'client':'"+str(self.username)+"',"+"'val':'"+str(self.val)+"'}")
                 # self.ws.send(self.message)
