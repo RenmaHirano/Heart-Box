@@ -76,6 +76,6 @@ class Websocket_Client():
         self.ws.run_forever()
 
 
-HOST_ADDR = "ws://3.19.252.112:9001/"  # AWS server IP
+HOST_ADDR = "ws://3.19.252.112:9001/"  # AWS server IP(fixed)
 ws_client = Websocket_Client(HOST_ADDR)
 ws_client.run_forever()
