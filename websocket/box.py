@@ -29,12 +29,15 @@ class Websocket_Client():
 
     def on_message(self, ws, message):
         try:
-            self.dict_message = ast.literal_eval(message)
+            self.dict_message = ast.literal_eval(message)  # string -> dict
             print("{} : {}".format(
                 self.dict_message['client'], self.dict_message['val']))
+
+            # msg from suit? when peak?
             if (self.dict_message['client'].startswith("suit")) and self.dict_message['val'].startswith("peak"):
                 thread.start_new_thread(self.led_controll, ())
-        except SyntaxError:
+
+        except SyntaxError:  # cannot change to dict
             message = message
             print("{} : {}".format(self.username, message))
         if not message.startswith("make connection"):
@@ -60,11 +63,10 @@ class Websocket_Client():
     def run(self, *args):
         while True:
             while not self.ready:
-                time.sleep(0.1)
-                self.val = 200
-                self.message = str(
-                    "{'client':'"+str(self.username)+"',"+"'val':'"+str(self.val)+"'}")
-            self.ws.send(self.message)
+                # time.sleep(0.1)
+                # self.val = 200
+                # self.message = str("{'client':'"+str(self.username)+"',"+"'val':'"+str(self.val)+"'}")
+                # self.ws.send(self.message)
             self.ready = False
 
         self.ws.close()
@@ -74,6 +76,6 @@ class Websocket_Client():
         self.ws.run_forever()
 
 
-HOST_ADDR = "ws://3.133.103.49:9001/"
+HOST_ADDR = "ws://3.19.252.112:9001/"  # AWS server IP
 ws_client = Websocket_Client(HOST_ADDR)
 ws_client.run_forever()

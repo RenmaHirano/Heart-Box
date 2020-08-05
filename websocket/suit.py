@@ -18,18 +18,19 @@ class Heartbeat():
         self.adc_channel = 0  # SPI channel = 0
         self.delay = 0.01  # Reading interval
         self.pulse_flg = 0
-    # Open access to SPI-paths
+
+        # Open access to SPI-paths
         self.spi = spidev.SpiDev()
         self.spi.open(0, 0)
         self.spi.max_speed_hz = 1350000
 
-    # Reading data from A/D converter
+    # A/D converter
     def ReadPulse(self, val):
         self.adc = self.spi.xfer2([1, (8 + val) << 4, 0])
         self.data = ((self.adc[1] & 3) << 8) + self.adc[2]
         return self.data
 
-    # main
+    # detect peak and send
     def peak(self):
         try:
             while True:
@@ -40,14 +41,14 @@ class Heartbeat():
                     time.sleep(self.delay)
                     continue
 
-                if ((self.analog_level < self.Criteria) and (self.pulse_flg == 1)):
+                if ((self.analog_level < self.Criteria) and (self.pulse_flg == 1)):  # peak down
                     print("analog_level = {}".format(self.analog_level))
                     self.pulse_flg = 0
                     break
 
-                if (self.analog_level < self.Criteria):
+                if (self.analog_level < self.Criteria):  # keep low
                     self.pulse_flg = 0
-                else:
+                else:  # keep high or peak up
                     self.pulse_flg = 1
 
                 time.sleep(self.delay)
@@ -113,7 +114,7 @@ class Websocket_Client():
         self.ws.run_forever()
 
 
-HOST_ADDR = "ws://3.133.103.49:9001/"
+HOST_ADDR = "ws://3.19.252.112:9001/"  # AWS server IP
 ws_client = Websocket_Client(HOST_ADDR)
 _heartbeat = Heartbeat()
 ws_client.run_forever()
