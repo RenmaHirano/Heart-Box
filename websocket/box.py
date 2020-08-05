@@ -5,6 +5,7 @@ try:
 except ImportError:
     import _thread as thread
 import time
+
 import RPi.GPIO as GPIO
 
 
@@ -24,8 +25,10 @@ class Websocket_Client():
                                          on_open=lambda ws: self.on_open(ws))
         self.username = "box"
         self.ready = True
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setup(2, GPIO.OUT)
+        GPIO.setmode(GPIO.BCM)  # use GPIO No.(not pin No.)
+        GPIO.setup(2, GPIO.OUT)  # LED
+        GPIO.setup(17, GPIO.OUT)  # solenoid
+        self.beat = True
 
     def on_message(self, ws, message):
         try:
@@ -36,6 +39,9 @@ class Websocket_Client():
             # msg from suit? when peak?
             if (self.dict_message['client'].startswith("suit")) and self.dict_message['val'].startswith("peak"):
                 thread.start_new_thread(self.led_controll, ())
+
+                GPIO.output(17, self.beat)  # move solenoid
+                self.beat = not self.beat  # invert flg
 
         except SyntaxError:  # cannot change to dict
             message = message
@@ -76,6 +82,6 @@ class Websocket_Client():
         self.ws.run_forever()
 
 
-HOST_ADDR = "ws://3.19.252.112:9001/"  # AWS server IP
+HOST_ADDR = "ws://3.19.252.112:9001/"  # AWS server IP(fixed)
 ws_client = Websocket_Client(HOST_ADDR)
 ws_client.run_forever()
