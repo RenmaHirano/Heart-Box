@@ -14,7 +14,7 @@
 
 # Cirsuit Diagram
 
-## ラズパイ→MCP3008
+## ラズパイ→MCP3002
 
 3.3V → Vdd/Vref(8)
 
@@ -67,6 +67,8 @@ sudo pip3 install spidev
 ```
 
 # Usage
+
+pressure.pyの使い方
 
 * pressure:2つの感圧センサの0-1023の圧力値を出力
 
